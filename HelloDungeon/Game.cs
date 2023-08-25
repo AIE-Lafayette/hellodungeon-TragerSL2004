@@ -14,18 +14,27 @@ namespace HelloDungeon
             string adventurer;
             float stamina = 10.0f;
             float taxation = 0.2f;
+            float damage = 1.0f;
             int health = 1;
             bool isNotExhausted = true;
             int roomNumber = 0;
-            string weapon;
+            float weapon;
+
+            //initialize weapon stats
+            float sword = 30.0f;
+            float claymore = 120.0f;
+            float bow = 20.0f;
+            float confidence = 0.0f;
 
             //game bootup messages
             Console.WriteLine("The Labyrinth of Insanity");
             Console.WriteLine("'Welcome to the labyrinth unfortunate traveler.");
             Console.WriteLine("I can help you escape this nightmare, but first I require your name.'");
-            
+
             //Player name input
+            Console.Write(">");
             adventurer = Console.ReadLine();
+            Console.Clear();
             Console.WriteLine("'Mmm yes, a very delightful name indeed.'");
             
             //Welcome message
@@ -34,41 +43,67 @@ namespace HelloDungeon
             Console.WriteLine("'I will give you a single weapon for use in this maze, but only 1! I'm not running a charity here!'");
 
             //Weapon choice
-            Console.WriteLine("The old man hands you a silver, small sword, a rusty large claymore, and wooden bow to choose from.");
+            Console.WriteLine("The old man hands you a small silver  sword, a rusty large claymore, and a wooden bow to choose from. Which do you take?");
             Console.WriteLine("1. Silver Sword");
             Console.WriteLine("2. Rusty Claymore");
             Console.WriteLine("3. Wooden Bow");
             Console.WriteLine("4. I don't need your help!");
+            Console.Write(">");
             string playerChoice = Console.ReadLine();
-            if (playerChoice == "1" || playerChoice == "Sword")
+            Console.Clear();
+            
+            //Various choice messages
+            if (playerChoice == "1" || playerChoice.ToLower() == "sword")
             {
-                Console.WriteLine("Ah, the sword? It is from a previous fool like you who failed to escape");
-                weapon = "Sword";
+                Console.WriteLine("'Ah, the sword? It is from a previous adventurer like you who failed to escape.'");
+                damage = sword;
+                weapon = sword;
+                Console.WriteLine("Your damage is now " + damage);
             }
-            else if (playerChoice == "2" || playerChoice == "CLaymore")
+            else if (playerChoice == "2" || playerChoice.ToLower() == "claymore")
             {
-                Console.WriteLine("This claymore is so old that I can't remember how I came into possesion of it");
-                weapon = "Claymore";
+                Console.WriteLine("'This claymore is so old that I can't remember how I came into possesion of it.'");
+                damage = claymore;
+                weapon = claymore;
+                Console.WriteLine("Your damage is now " + damage + ".");
             }
-            else if (playerChoice == "3" || playerChoice == "Bow")
+            else if (playerChoice == "3" || playerChoice.ToLower() == "bow")
             {
-                Console.WriteLine("This bow was left behind by a brave archer, however I never learned of her fate");
-                weapon = "Bow";
+                Console.WriteLine("'This bow was left behind by a particularly brave archer, however I never learned of her fate'");
+                damage = bow;
+                weapon = bow;
+                Console.WriteLine("Your damage is now " + damage + ".");
+                
             }
-            else if (playerChoice == "4" || playerChoice == "I don't need your help!")
+            else if (playerChoice == "4" || playerChoice.ToLower() == "i don't need your help!")
             {
-                Console.WriteLine("You think you can survive without my help? Then go ahead and try!");
-                weapon = "CONFIDENCE";
+                Console.WriteLine("'You think you can survive without my help? Then go ahead and try!'");
+                damage = confidence;
+                weapon = confidence;
+                Console.WriteLine("You decide you don't need anyone's help, and storm off without a weapon, which is probably a bad move!");
+                Console.WriteLine("With your overwhelming self confidence, you decide to proceed further into the labyrinth.");
+                Console.WriteLine("Your damage is now " + damage + ".");
+                Console.WriteLine("Unfortunately, you are almost instantly ambushed by monsters, however you have no weapon to defend yourself with...");
+                Console.WriteLine("As the monsters kill you without hesitation, you ponder why you decided to not take the old man's help.");
+                health = 0;
             }
             else
             {
-                Console.WriteLine("Do you take me for a fool? Perhaps you do not deserve my help!");
+                Console.WriteLine("'Do you take me for a fool? Perhaps you do not deserve my help!'");
             }
+            //Pause between the start to the first room of the game
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey(true);
+
+            //enemy health bars
+            float enemyHealth = 100.0f;
+            enemyHealth -= damage;
 
             //Death message and stamina warning
             if (health <= 0)
             {
-                Console.WriteLine("You have met your end in the endless maze");
+                Console.WriteLine("You have met your end in the cursed maze, and your soul wanders among the many others before you.");
+                Console.WriteLine("GAME OVER");
             }
             else if (stamina <= 2)
             {
