@@ -51,10 +51,10 @@ namespace HelloDungeon
             }
         }
         //Menu function
-        string DisplayMenu(string prompt, string option1, string option2, string option3)
+        string DisplayMenu(string prompt, string option1, string option2, string option3, string option4)
         {
             string playerChoice = "";
-            while (playerChoice != "1" && playerChoice != "2" && playerChoice != "3")
+            while (playerChoice != "1" && playerChoice != "2" && playerChoice != "3" && playerChoice != "4")
             {
                 //Display prompt
                 Console.Clear();
@@ -63,18 +63,31 @@ namespace HelloDungeon
                 //Display all options
                 Console.WriteLine("1." + option1);
                 Console.WriteLine("2." + option2);
-                Console.WriteLine("3." + option3);
-
+                if (option3 != "")
+                {
+                    Console.WriteLine("3." + option3);
+                }
+                if (option4 != "")
+                {
+                    Console.WriteLine("4." + option4);
+                }
                 //Get player input
                 Console.Write(">");
                 playerChoice = Console.ReadLine();
 
-                //Incorrect input notification
-                if (playerChoice != "1" && playerChoice != "2" && playerChoice != "3")
+                
+                if (playerChoice != "1" && playerChoice != "2")
                 {
+                    if (playerChoice == "3" && option3 != "" || playerChoice == "4" && option4 != "")
+                    {
+                        continue;
+                    }
+                    //Incorrect input notification
                     Console.WriteLine("That's not an option, traveler!");
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey(true);
+
+                    playerChoice = "";
                 }
             }
             return playerChoice;
@@ -95,16 +108,11 @@ namespace HelloDungeon
             bool playerIsAlive = true;
 
             //Initialize weapon stats
-            string sword = "";
-            string claymore = "";
-            string bow = "";
-            string confidence = "";
             float swordDamage = 30.0f;
             float claymoreDamage = 120.0f;
             float bowDamage = 20.0f;
             float confidenceDamage = 0.0f;
-
-            
+            bool weaponSelected = false;
 
             //Overall game loop
             while (playerIsAlive == true)
@@ -150,82 +158,44 @@ namespace HelloDungeon
                 Console.WriteLine("'I will give you a single weapon for use in this maze, but only 1! I'm not running a charity here!'");
 
                 //Weapon choice
-                Console.WriteLine("The old man hands you a small silver  sword, a rusty large claymore, and a wooden bow to choose from. Which do you take?");
-                Console.WriteLine("1. Silver Sword");
-                Console.WriteLine("2. Rusty Claymore");
-                Console.WriteLine("3. Wooden Bow");
-                Console.WriteLine("4. I don't need your help!");
-                Console.Write(">");
-                playerChoice = "";
-                playerChoice = Console.ReadLine();
-                Console.Clear();
+                playerChoice = DisplayMenu("The old man hands you a small silver  sword, a rusty large claymore, and a wooden bow to choose from. Which do you take?", "Silver Sword", "Rusty Claymore", "Wooden Bow", "I don't need your help!");
                 
-                bool weaponSelected = false;
-
+                
                 //Various choice outcomes
                 while (weaponSelected == false)
                 {
-                    while (validInputReceived == false)
-                    {
-                        if (playerChoice == "1" || playerChoice.ToLower() == "sword")
-                        {
-                            Console.WriteLine("'Ah, the sword? It is from a previous adventurer like you who failed to escape.'");
-                            playerDamage = swordDamage;
-                            validInputReceived = true;
-                            weaponSelected = true;
-                        }
-                        else if (playerChoice == "2" || playerChoice.ToLower() == "claymore")
-                        {
-                            Console.WriteLine("'This claymore is so old that I can't remember how I came into possesion of it.'");
-                            playerDamage = claymoreDamage;
-                            validInputReceived = true;
-                            weaponSelected = true;
-                        }
-                        else if (playerChoice == "3" || playerChoice.ToLower() == "bow")
-                        {
-                            Console.WriteLine("'This bow was left behind by a particularly brave archer, however I never learned of her fate'");
-                            playerDamage = bowDamage;
-                            validInputReceived = true;
-                            weaponSelected = true;
-                        }
-                        else if (playerChoice == "4" || playerChoice.ToLower() == "i don't need your help!")
-                        {
-                            Console.WriteLine("'You think you can survive without my help? Then go ahead and try!'");
-                            playerDamage = confidenceDamage;
-                            Console.WriteLine("You decide you don't need anyone's help, and storm off without a weapon, which is probably a bad move!");
-                            Console.WriteLine("With your overwhelming self confidence, you decide to proceed further into the labyrinth.");
-                            Console.WriteLine("Your damage is now " + playerDamage + ".");
-                            Console.WriteLine("Unfortunately, you are almost instantly ambushed by monsters, however you have no weapon to defend yourself with...");
-                            Console.WriteLine("As the monsters kill you without hesitation, you ponder why you decided to not take the old man's help.");
-                            playerHealth = 0;
-                            validInputReceived = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("'Do you take me for a fool? Perhaps you do not deserve my help!'");
-                        }
-                    }
-
-                    playerChoice = "";
-                    while (weaponSelected == true)
-                    {
-                        Console.WriteLine("'Are you sure you want this weapon?'");
-                        Console.WriteLine("1.Yes");
-                        Console.WriteLine("2.No");
-
-                        Console.Write(">");
-                        playerChoice = Console.ReadLine();
-                        
                         if (playerChoice == "1")
                         {
-                            weaponSelected = false;
-                            PrintStats(adventurer, stamina, playerHealth, playerDamage);
+                        Console.WriteLine("'Ah, the sword? It is from a previous adventurer like you who failed to escape.'");
+                        playerDamage = swordDamage;
+                        Console.WriteLine("You're damage is now" + playerDamage + ".");
+                        weaponSelected = true;
                         }
-                        else
+                        else if (playerChoice == "2")
                         {
-                            weaponSelected = true;
-                        }
+                        Console.WriteLine("'This claymore is so old that I can't remember how I came into possesion of it.'");
+                        playerDamage = claymoreDamage;
+                        weaponSelected = true;
+                        Console.WriteLine("You're damage is now" + playerDamage + ".");
                     }
+                        else if (playerChoice == "3")
+                        {
+                        Console.WriteLine("'This bow was left behind by a particularly brave archer, however I never learned of her fate'");
+                        playerDamage = bowDamage;
+                        weaponSelected = true;
+                        }
+                        else if (playerChoice == "4")
+                        {
+                        Console.WriteLine("'You think you can survive without my help? Then go ahead and try!'");
+                        playerDamage = confidenceDamage;
+                        Console.WriteLine("You decide you don't need anyone's help, and storm off without a weapon, which is probably a bad move!");
+                        Console.WriteLine("With your overwhelming self confidence, you decide to proceed further into the labyrinth.");
+                        Console.WriteLine("Your damage is now " + playerDamage + ".");
+                        Console.WriteLine("Unfortunately, you are almost instantly ambushed by monsters, however you have no weapon to defend yourself with...");
+                        Console.WriteLine("As the monsters kill you without hesitation, you ponder why you decided to not take the old man's help.");
+                        playerHealth = 0;
+                        weaponSelected = true;
+                        }
                 }
                 //Pause between the start to the first room of the game
                 
@@ -243,7 +213,7 @@ namespace HelloDungeon
                     Console.WriteLine("You have met your end in the cursed maze, and your soul wanders among the many others before you.");
                     Console.WriteLine("GAME OVER");
                     Console.WriteLine("Do you wish to try again?");
-                    Console.WriteLine("1.Yes");
+                    Console.WriteLine("1 or Yes");
                     Console.WriteLine("Any key for no");
                     playerChoice = Console.ReadLine();
                     if (playerChoice.ToLower() == "1" || playerChoice.ToLower() == "yes")
@@ -251,6 +221,7 @@ namespace HelloDungeon
                         Console.WriteLine("Press any key to restart");
                         Console.ReadKey(true);
                         Console.Clear();
+                        playerChoice = "";
                         continue;
                     }
                     else
